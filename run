@@ -1,0 +1,3 @@
+#!/bin/bash
+ENV OPENAI_API_KEY = "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"
+python3 command.py

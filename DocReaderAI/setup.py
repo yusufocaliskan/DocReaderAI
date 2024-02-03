@@ -1,0 +1,30 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="gptvers_doc_reader",
+    version="0.1",
+    packages=find_packages(),
+    description="Doc Reader",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    include_package_data=True,
+    author="GPTVerse",
+    author_email="support@gptverse.art",
+    install_requires=[
+        "dacite",
+        "icecream",
+        "pydantic",
+        "watchdog",
+        "tenacity",
+        "tiktoken",
+        "langchain-openai",
+        "langchain",
+        "streamlit",
+        "python-dotenv",
+        "langchain_community",
+        "bs4",
+        "pypdf",
+        "faiss-cpu",
+        "langchainhub",
+    ],
+)

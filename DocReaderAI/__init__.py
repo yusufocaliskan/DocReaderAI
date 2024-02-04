@@ -1,13 +1,26 @@
+# Helpers
 from icecream import ic
 from dotenv import load_dotenv
+from os import environ
+
+# Langchain
 from langchain.chains import ConversationChain, LLMChain
 from langchain.chains.combine_documents.stuff import create_stuff_documents_chain
 from langchain.prompts import PromptTemplate
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_openai import OpenAI
-from os import environ
-from DocReaderAI.DocLoader.Loader import Loader
+from langchain.chains.summarize import load_summarize_chain
+
+# DocReaderAI
+from DocReaderAI.Helpers.Loader import Loader
+from DocReaderAI.Chains.SummarizationChain import SummarizationChain
+from DocReaderAI.Helpers.ChainBuilder import ChainBuilder
+from DocReaderAI.Helpers.Templator import Templator
+from DocReaderAI.Templates.mainDocReaderPromptTemplate import (
+    mainDocReaderPromptTemplate,
+)
 
 
 load_dotenv()
@@ -97,31 +110,31 @@ class DocReaderAI:
 
         # Load the raw content from the given files
         combinedFiles = Loader.combineAllLoadedFiles()
+
+        # Summarize text
+        # summarizedText = SummarizationChain.summarize(
+        #     llm=llm, text=combinedFiles, verbose=True
+        # )
+
+        # splittedText = Loader.splitteText(summarizedText)
+
         allStoreDoc = Loader.transform2Vectors(combinedFiles)
 
         ## produce getLenghtOfLoadedFiles amon
-        k = Loader.getLenghtOfLoadedFiles() + 1
+        k = Loader.getLenghtOfLoadedFiles()
         queryResult = allStoreDoc.similarity_search(question, k)
 
         # Combine them
         content = " ".join([doc.page_content for doc in queryResult])
 
         # Create a prompt
-        prompt = PromptTemplate(
+        prompt = Templator.prompt(
             input_variables=["question", "docs"],
-            template="""
-                Use maximum of 150 words to answer my question.
-                Your answer must only in the context of the question. Don't add any more information is the human doesn't needed. 
-                Also answer with same language User using in the question
-                Use the following pieces of context and try your best to answer user question.
-                My question is: {question}
-
-                The context is: {docs}
-            """,
+            template=mainDocReaderPromptTemplate,
         )
 
-        # conversation = ConversationChain(llm=llm, verbose=False)
+        chain = ChainBuilder.create(llm=llm, prompt=prompt)
 
-        chain = LLMChain(llm=llm, prompt=prompt, verbose=True)
         answer = chain.run(question=question, docs=content)
+
         return answer

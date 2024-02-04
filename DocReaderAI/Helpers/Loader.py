@@ -17,10 +17,13 @@ class Loader:
 
     loadedFiles = []
 
+    # Retuns length of the loaded files
     @staticmethod
     def getLenghtOfLoadedFiles():
         return len(Loader.loadedFiles)
 
+    # just for debuggin
+    # print(str(Loader))
     def __str__(self):
         ic(Loader.loadedFiles)
         return ""
@@ -38,6 +41,8 @@ class Loader:
     # Load PDF
     @staticmethod
     def loadPdfFile(url):
+        # Summarize the file when loaded. An save it
+        # put it to the database
         loader = PyPDFLoader(url)
 
         loadedFile = loader.load()
@@ -52,14 +57,27 @@ class Loader:
         Loader.loadedFiles.append(loadedFile)
         return loadedFile
 
+    @staticmethod
+    def splitter(**kwargs):
+        return RecursiveCharacterTextSplitter(**kwargs)
+
+    @staticmethod
+    def splitteText(text):
+
+        textSplitter = Loader.splitter(chunk_size=400, chunk_overlap=200)
+        return textSplitter.split_text(text)
+
+    @staticmethod
+    def splitteDocuments(text):
+
+        textSplitter = Loader.splitter(chunk_size=400, chunk_overlap=200)
+        return textSplitter.split_documents(text)
+
     # Parser
     @staticmethod
     def transform2Vectors(rawTextDoc):
 
-        textSplitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000, chunk_overlap=200
-        )
-        docs = textSplitter.split_documents(rawTextDoc)
+        docs = Loader.splitteDocuments(rawTextDoc)
 
         # Covert to the vector and save it
         savedVectoralData = FAISS.from_documents(docs, embeddings)

@@ -26,5 +26,8 @@ setup(
         "pypdf",
         "faiss-cpu",
         "langchainhub",
+        "transformers",
+        "sentence_transformers",
+        "numpy",
     ],
 )

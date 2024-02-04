@@ -1,6 +1,6 @@
 from icecream import ic
 from dotenv import load_dotenv
-from langchain.chains import LLMChain
+from langchain.chains import ConversationChain, LLMChain
 from langchain.chains.combine_documents.stuff import create_stuff_documents_chain
 from langchain.prompts import PromptTemplate
 from langchain_core.documents import Document
@@ -12,7 +12,7 @@ from DocReaderAI.DocLoader.Loader import Loader
 
 load_dotenv()
 OPENAI_TEMPERATURE = environ.get("OPENAI_TEMPERATURE")
-llm = OpenAI(temperature=OPENAI_TEMPERATURE, streaming=True)
+llm = OpenAI(temperature=OPENAI_TEMPERATURE)
 
 
 class DocReaderAI:
@@ -20,12 +20,15 @@ class DocReaderAI:
     @staticmethod
     def ask(question, k=4):
 
-        docRaw = Loader.loadPdfFile("assets/files/hasan_ozkul.pdf")
-        savedVectoralData = Loader.transform2Vectors(docRaw).similarity_search(
-            question, k
-        )
+        # Load the raw content from the given files
+        combinedFiles = Loader.combineAllLoadedFiles()
+        allStoreDoc = Loader.transform2Vectors(combinedFiles)
+        queryResult = allStoreDoc.similarity_search(question, k)
+        print("queryResult-->", queryResult)
 
-        content = " ".join([doc.page_content for doc in savedVectoralData])
+        # Combine them
+        content = " ".join([doc.page_content for doc in queryResult])
+
         prompt = PromptTemplate(
             input_variables=["question", "docs"],
             template="""
@@ -48,7 +51,7 @@ class DocReaderAI:
         return answer
 
     @staticmethod
-    def askType2(question, chat_history, k=10):
+    def askType2(question, chat_history, k=1):
 
         # Load the raw content from the given files
         combinedFiles = Loader.combineAllLoadedFiles()
@@ -84,4 +87,41 @@ class DocReaderAI:
         )
 
         # simple retun the answer
+        return answer
+
+    @staticmethod
+    def askType3(
+        question,
+        chat_history,
+    ):
+
+        # Load the raw content from the given files
+        combinedFiles = Loader.combineAllLoadedFiles()
+        allStoreDoc = Loader.transform2Vectors(combinedFiles)
+
+        ## produce getLenghtOfLoadedFiles amon
+        k = Loader.getLenghtOfLoadedFiles() + 1
+        queryResult = allStoreDoc.similarity_search(question, k)
+
+        # Combine them
+        content = " ".join([doc.page_content for doc in queryResult])
+
+        # Create a prompt
+        prompt = PromptTemplate(
+            input_variables=["question", "docs"],
+            template="""
+                Use maximum of 150 words to answer my question.
+                Your answer must only in the context of the question. Don't add any more information is the human doesn't needed. 
+                Also answer with same language User using in the question
+                Use the following pieces of context and try your best to answer user question.
+                My question is: {question}
+
+                The context is: {docs}
+            """,
+        )
+
+        # conversation = ConversationChain(llm=llm, verbose=False)
+
+        chain = LLMChain(llm=llm, prompt=prompt, verbose=True)
+        answer = chain.run(question=question, docs=content)
         return answer

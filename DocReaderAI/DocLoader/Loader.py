@@ -17,6 +17,10 @@ class Loader:
 
     loadedFiles = []
 
+    @staticmethod
+    def getLenghtOfLoadedFiles():
+        return len(Loader.loadedFiles)
+
     def __str__(self):
         ic(Loader.loadedFiles)
         return ""

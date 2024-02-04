@@ -1,3 +1,4 @@
+from icecream import ic
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import FAISS
@@ -14,17 +15,38 @@ embeddings = OpenAIEmbeddings()
 # To load some docs
 class Loader:
 
+    loadedFiles = []
+
+    def __str__(self):
+        ic(Loader.loadedFiles)
+        return ""
+
+    @staticmethod
+    def combineAllLoadedFiles():
+        files = Loader.loadedFiles
+        pages = []
+        for file in files:
+            for page in file:
+                pages.append(page)
+
+        return pages
+
     # Load PDF
     @staticmethod
     def loadPdfFile(url):
         loader = PyPDFLoader(url)
-        return loader.load()
+
+        loadedFile = loader.load()
+        Loader.loadedFiles.append(loadedFile)
+        return loadedFile
 
     # Load web base doc {a web page, for instance}
     @staticmethod
     def loadWebBaseDoc(url):
         loader = WebBaseLoader(url)
-        return loader.load()
+        loadedFile = loader.load()
+        Loader.loadedFiles.append(loadedFile)
+        return loadedFile
 
     # Parser
     @staticmethod

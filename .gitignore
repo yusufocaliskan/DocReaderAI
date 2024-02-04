@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-assets
+assets/files/*
 
 __pycache__/
 *.py[cod]

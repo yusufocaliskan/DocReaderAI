@@ -1,4 +1,4 @@
-from DocReaderAI.DocLoader.Loader import Loader
+from DocReaderAI.Helpers.Loader import Loader
 from DocReaderAI import DocReaderAI
 from icecream import ic
 from dotenv import load_dotenv
@@ -14,7 +14,9 @@ while True:
 
     print("==============================")
     question = input("Ask something: ")
-    answer = DocReaderAI.askType3(question, chat_history)
+    answer = DocReaderAI.askType3(question=question, chat_history=chat_history)
+
     print("==============================")
-    chat_history.append(answer)
+
+    chat_history.append({"q": question, "a": answer})
     print(answer)

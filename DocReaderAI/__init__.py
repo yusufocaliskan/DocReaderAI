@@ -13,6 +13,9 @@ from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_openai import OpenAI
 from langchain.chains.summarize import load_summarize_chain
 
+# agent
+from langchain.agents import tool, load_tools, initialize_agent
+
 # DocReaderAI
 from DocReaderAI.Helpers.Loader import Loader
 from DocReaderAI.Chains.SummarizationChain import SummarizationChain
@@ -103,10 +106,7 @@ class DocReaderAI:
         return answer
 
     @staticmethod
-    def askType3(
-        question,
-        chat_history,
-    ):
+    def askType3(question, chat_history):
 
         # Load the raw content from the given files
         combinedFiles = Loader.combineAllLoadedFiles()
@@ -118,6 +118,10 @@ class DocReaderAI:
 
         # splittedText = Loader.splitteText(summarizedText)
 
+        historical_context = " "
+        for ch in chat_history:
+            historical_context += f"question: {ch['q']}. \n answer: {ch['a']} \n"
+
         allStoreDoc = Loader.transform2Vectors(combinedFiles)
 
         ## produce getLenghtOfLoadedFiles amon
@@ -127,14 +131,26 @@ class DocReaderAI:
         # Combine them
         content = " ".join([doc.page_content for doc in queryResult])
 
+        # memory = ConversationBufferMemory(memory_key="chat_history")
+
         # Create a prompt
         prompt = Templator.prompt(
-            input_variables=["question", "docs"],
+            input_variables=["question", "docs", "chat_history"],
             template=mainDocReaderPromptTemplate,
         )
+        chain = ChainBuilder.create(llm=llm, prompt=prompt, verbose=True)
 
-        chain = ChainBuilder.create(llm=llm, prompt=prompt)
-
-        answer = chain.run(question=question, docs=content)
+        answer = chain.run(
+            question=question, docs=content, chat_history=historical_context
+        )
 
         return answer
+
+    @tool
+    def lenOfSring(name: str) -> int:
+        """Returns the length of a word."""
+        return len(name)
+
+    @staticmethod
+    def askType4(question):
+        return DocReaderAI.askType3.invoke(question, verbose=True)

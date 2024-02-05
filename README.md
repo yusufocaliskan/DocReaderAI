@@ -5,7 +5,7 @@
 3. Combine all the extracted text and store them in an array
 4. Convert the combined text in to vectors and store in FAISS database
 5. Get the question of the client
-6. Get the relavent text in the FAISS db.
+6. Get the relavent text in the FAISS db.[^1]
 
 - 6.1 - To get the relavent part of the extradted text based on cleint queries.
 
@@ -22,11 +22,13 @@
 
 # Notes
 
-## FAISS
+## [^1]: FAISS
+
+[!NOTE]
+FAISS alse uses RAM, becareful(!)
 
 - FAISS achieves optimal performance when using the CPU; increasing the CPU amount can enhance performance. (https://faiss.ai/index.html)
 - Most algorithms of FAISS are implemented on the CPU
-- FAISS alse uses RAM, becareful(!)
 - The K parametter is the nearest neighbor that FAISS would produce (2nd and n. nearst )
 
 @yusufocaliskan

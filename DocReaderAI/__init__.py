@@ -18,6 +18,7 @@ from langchain.agents import tool, load_tools, initialize_agent
 
 # DocReaderAI
 from DocReaderAI.Helpers.Loader import Loader
+from DocReaderAI.Helpers.Textor import Textor
 from DocReaderAI.Chains.SummarizationChain import SummarizationChain
 from DocReaderAI.Helpers.ChainBuilder import ChainBuilder
 from DocReaderAI.Helpers.Templator import Templator
@@ -38,7 +39,7 @@ class DocReaderAI:
 
         # Load the raw content from the given files
         combinedFiles = Loader.combineAllLoadedFiles()
-        allStoreDoc = Loader.transform2Vectors(combinedFiles)
+        allStoreDoc = Textor.transform2Vectors(combinedFiles)
         queryResult = allStoreDoc.similarity_search(question, k)
         print("queryResult-->", queryResult)
 
@@ -71,7 +72,7 @@ class DocReaderAI:
 
         # Load the raw content from the given files
         combinedFiles = Loader.combineAllLoadedFiles()
-        allStoreDoc = Loader.transform2Vectors(combinedFiles)
+        allStoreDoc = Textor.transform2Vectors(combinedFiles)
         queryResult = allStoreDoc.similarity_search(question, k)
         print("queryResult-->", queryResult)
 
@@ -106,6 +107,10 @@ class DocReaderAI:
         return answer
 
     @staticmethod
+    def askType5(question):
+        pass
+
+    @staticmethod
     def askType3(question, chat_history):
 
         # Load the raw content from the given files
@@ -122,7 +127,7 @@ class DocReaderAI:
         for ch in chat_history:
             historical_context += f"question: {ch['q']}. \n answer: {ch['a']} \n"
 
-        allStoreDoc = Loader.transform2Vectors(combinedFiles)
+        allStoreDoc = Textor.transform2Vectors(combinedFiles)
 
         ## produce getLenghtOfLoadedFiles amon
         k = Loader.getLenghtOfLoadedFiles()

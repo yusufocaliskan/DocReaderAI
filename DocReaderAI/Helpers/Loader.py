@@ -1,15 +1,6 @@
 from icecream import ic
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.vectorstores import FAISS
-
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
-
-from dotenv import load_dotenv
-
-load_dotenv()
-embeddings = OpenAIEmbeddings()
 
 
 # To load some docs
@@ -56,29 +47,3 @@ class Loader:
         loadedFile = loader.load()
         Loader.loadedFiles.append(loadedFile)
         return loadedFile
-
-    @staticmethod
-    def splitter(**kwargs):
-        return RecursiveCharacterTextSplitter(**kwargs)
-
-    @staticmethod
-    def splitteText(text):
-
-        textSplitter = Loader.splitter(chunk_size=400, chunk_overlap=200)
-        return textSplitter.split_text(text)
-
-    @staticmethod
-    def splitteDocuments(text):
-
-        textSplitter = Loader.splitter(chunk_size=400, chunk_overlap=200)
-        return textSplitter.split_documents(text)
-
-    # Parser
-    @staticmethod
-    def transform2Vectors(rawTextDoc):
-
-        docs = Loader.splitteDocuments(rawTextDoc)
-
-        # Covert to the vector and save it
-        savedVectoralData = FAISS.from_documents(docs, embeddings)
-        return savedVectoralData

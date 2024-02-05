@@ -22,12 +22,12 @@
 
 # Notes
 
-## [^1]: FAISS
+## FAISS
 
 [!NOTE]
 FAISS alse uses RAM, becareful(!)
 
-- FAISS achieves optimal performance when using the CPU; increasing the CPU amount can enhance performance. (https://faiss.ai/index.html)
+- [^1]: FAISS achieves optimal performance when using the CPU; increasing the CPU amount can enhance performance. (https://faiss.ai/index.html)
 - Most algorithms of FAISS are implemented on the CPU
 - The K parametter is the nearest neighbor that FAISS would produce (2nd and n. nearst )
 

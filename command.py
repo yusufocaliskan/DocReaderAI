@@ -14,7 +14,7 @@ while True:
 
     print("==============================")
     question = input("Ask something: ")
-    answer = DocReaderAI.askType3(question=question, chat_history=chat_history)
+    answer = DocReaderAI().askType5(question=question, chat_history=chat_history)
 
     print("==============================")
 

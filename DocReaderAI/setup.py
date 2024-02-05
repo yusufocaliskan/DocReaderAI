@@ -29,5 +29,6 @@ setup(
         "transformers",
         "sentence_transformers",
         "numpy",
+        "pymongo",
     ],
 )

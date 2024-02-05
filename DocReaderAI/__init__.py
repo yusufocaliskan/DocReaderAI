@@ -22,6 +22,8 @@ from DocReaderAI.Helpers.Textor import Textor
 from DocReaderAI.Chains.SummarizationChain import SummarizationChain
 from DocReaderAI.Helpers.ChainBuilder import ChainBuilder
 from DocReaderAI.Helpers.Templator import Templator
+from DocReaderAI.Database.FaissDB import FaissDB
+
 from DocReaderAI.Templates.mainDocReaderPromptTemplate import (
     mainDocReaderPromptTemplate,
 )
@@ -33,6 +35,12 @@ llm = OpenAI(temperature=OPENAI_TEMPERATURE)
 
 
 class DocReaderAI:
+
+    fd: FaissDB
+
+    def __init__(self) -> None:
+        combinedFiles = Loader.combineAllLoadedFiles()
+        self.fd = FaissDB(docs=combinedFiles)
 
     @staticmethod
     def ask(question, k=4):
@@ -106,9 +114,22 @@ class DocReaderAI:
         # simple retun the answer
         return answer
 
-    @staticmethod
-    def askType5(question):
-        pass
+    def askType5(self, question, chat_history):
+
+        # queryResult = db.similarity_search(question, k=3)
+        vectorizedQuery = self.fd.embbedingTextQuery(text=question)
+        queryResult = self.fd.vectorDBInstance.similarity_search_with_score(
+            question, k=3
+        )
+        # print("self.fd.vectorDBInstance", self.fd.vectorDBInstance)
+        # queryResult = self.fd.vectorDBInstance.similarity_search_by_vector(
+        #     vectorizedQuery, k=3
+        # )
+        retriever = self.fd.vectorDBInstance.as_retriever()
+
+        # docs = retriever.invoke(question)
+
+        ic("Result: -->", queryResult)
 
     @staticmethod
     def askType3(question, chat_history):

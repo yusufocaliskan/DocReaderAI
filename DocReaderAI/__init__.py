@@ -118,6 +118,9 @@ class DocReaderAI:
 
         # queryResult = db.similarity_search(question, k=3)
         vectorizedQuery = self.fd.embbedingTextQuery(text=question)
+
+        # db1 = self.fd.getTheSavedLocalDB()
+        # print("Local DB", db1)
         queryResult = self.fd.vectorDBInstance.similarity_search_with_score(
             question, k=3
         )
@@ -125,6 +128,7 @@ class DocReaderAI:
         # queryResult = self.fd.vectorDBInstance.similarity_search_by_vector(
         #     vectorizedQuery, k=3
         # )
+        #
         retriever = self.fd.vectorDBInstance.as_retriever()
 
         # docs = retriever.invoke(question)

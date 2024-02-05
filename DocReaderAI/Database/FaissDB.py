@@ -13,10 +13,13 @@ class FaissDB:
     embeddings: OpenAIEmbeddings
 
     # Index name of the vector search
-    faissLocalIndexName = "gptVerseFaissIndexName"
+    faissLocalIndexName = "faissDataIndex"
 
     # index nama of the local db
     vectorDBInstance = None
+
+    # Dimantion
+    dimantion = 1536  # OpenAI embeddings amount
 
     def __init__(self, docs) -> None:
 
@@ -24,7 +27,9 @@ class FaissDB:
 
         # Create vector doc
         self.vectorDBInstance = self.createDBFromDocument(docs=docs)
-        print("self.vectorDBInstance", self.vectorDBInstance)
+
+        # And save it
+        # self.getTheSavedLocalDB()
 
     def createDBFromDocument(self, docs):
         """Generates faiss vector vecktorstore"""
@@ -34,8 +39,8 @@ class FaissDB:
         return db
 
     # Save it to the load
+    # We will then use it
     def saveTheDBInLocal(self):
-        # We will then use it
         FAISS.save_local(self.faissLocalIndexName)
 
     # Loads the data base saved in local

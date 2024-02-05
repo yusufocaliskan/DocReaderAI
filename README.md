@@ -22,13 +22,18 @@
 
 # Notes
 
-## FAISS
+## FAISSS
 
-[!NOTE]
-FAISS alse uses RAM, becareful(!)
-
-- [^1]: FAISS achieves optimal performance when using the CPU; increasing the CPU amount can enhance performance. (https://faiss.ai/index.html)
+- FAISS alse uses RAM, becareful(!)
+- FAISS achieves optimal performance when using the CPU; increasing the CPU amount can enhance performance. (https://faiss.ai/index.html)
 - Most algorithms of FAISS are implemented on the CPU
-- The K parametter is the nearest neighbor that FAISS would produce (2nd and n. nearst )
+- Tre K parametter is the nearest neighbor that FAISS would produce (2nd and n. nearst )
+
+## Usefull Links
+
+- Faiss Doc --> https://faiss.ai/index.html
+- How Language Models Use Long Contexts --> https://arxiv.org/pdf/2307.03172.pdf
+- Ensemble Reciever: --> https://python.langchain.com/docs/modules/data_connection/retrievers/ensemble
+  - Helps to combine docs that extracted from different docs
 
 @yusufocaliskan

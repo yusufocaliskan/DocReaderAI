@@ -9,11 +9,11 @@
 
 - To get the relavent part of the extradted text based on cleint queries.
 - Why do we need to do it?
-  a - Sending all the extracted data from cleint's uploaded files to the AI-Model (in this case Chat GGPT) is imposible, because of the token limitaion of the OpenAI
-  b - So we need a relavent data in the context of the client's query
-  c - The vectoral database FAISS would produce few nears neighbor text accourding to the client's (question)
-  d - Based on the result of FAISS query, at this stage, the data is still raw,
-  Therefore we are preparing the raw data for Chat-GPT to generate a meaningfull response
+  - Sending all the extracted data from cleint's uploaded files to the AI-Model (in this case Chat GGPT) is imposible, because of the token limitaion of the OpenAI
+  - So we need a relavent data in the context of the client's query
+  - The vectoral database FAISS would produce few nears neighbor text accourding to the client's (question)
+  - Based on the result of FAISS query, at this stage, the data is still raw,
+    Therefore we are preparing the raw data for Chat-GPT to generate a meaningfull response
 
 7. Send the to chat gpt
 8. Display the response

@@ -23,7 +23,12 @@ class TemplatesHolder:
         The context is: {docs}
         
     """
-
+    meaninfulNamesGeneratorPromptTemplate = """
+        You are a pdf reader. Read the content create
+        a meaning full file name base on the content
+        If you can't, find the title of the  content
+        The content is: {docs}
+    """
     summarizTextTemplate = """
         Summarize the content. Remember the person name and file name 
 
@@ -34,7 +39,4 @@ class TemplatesHolder:
             the summarize content about person
         - The second Person Name and file name:
             the summarize content about person
-        
-
-        
     """

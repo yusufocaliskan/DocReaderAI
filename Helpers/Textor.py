@@ -17,6 +17,19 @@ class Textor:
         )
 
     @staticmethod
+    def convertDocs2Text(docs):
+
+        result = ""
+        i = 0
+        for doc in docs:
+            i += 1
+            result += f"""\n ----- Document-{i}: 
+                Document{i} Source: {doc.metadata['source']} 
+                Document{i} Page: {doc.metadata['page']} 
+                Document {i} Content: {doc.page_content}"""
+        return result
+
+    @staticmethod
     def splitteText(text):
 
         textSplitter = Textor.splitter(chunk_size=1000, chunk_overlap=50)
@@ -33,7 +46,6 @@ class Textor:
     def transform2Vectors(rawTextDoc):
 
         docs = Textor.splitteDocuments(rawTextDoc)
-
         # Covert to the vector and save it
         savedVectoralData = FAISS.from_documents(docs, openAIEmbeddings)
         return savedVectoralData

@@ -33,7 +33,11 @@
 
 - Faiss Doc --> https://faiss.ai/index.html
 - How Language Models Use Long Contexts --> https://arxiv.org/pdf/2307.03172.pdf
+- MultiVector --> https://python.langchain.com/docs/modules/data_connection/retrievers/multi_vector
 - Ensemble Reciever: --> https://python.langchain.com/docs/modules/data_connection/retrievers/ensemble
   - Helps to combine docs that extracted from different docs
+- LongContextReorder() : ReOrdering relavent documents is to get better performance : -->https://python.langchain.com/docs/modules/data_connection/retrievers/long_context_reorder
+- Compare Multiple Large Files : https://www.youtube.com/watch?v=UmvqMscxwoc&list=PLY_VzrnxwMWhD4EgclTv0jymk84xRp3ab&index=3
+- Prompt Engineering : https://www.promptingguide.ai/models/chatgpt
 
 @yusufocaliskan

@@ -30,5 +30,7 @@ setup(
         "sentence_transformers",
         "numpy",
         "pymongo",
+        "duckduckgo-search",
+        "wikipedia",
     ],
 )

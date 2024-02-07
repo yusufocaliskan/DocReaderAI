@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 
-from DocReaderAI.Helpers.Textor import Textor
+from Helpers.Textor import Textor
 
 load_dotenv()
 
@@ -15,18 +15,12 @@ class FaissDB:
     # Index name of the vector search
     faissLocalIndexName = "faissDataIndex"
 
-    # index nama of the local db
-    vectorDBInstance = None
-
     # Dimantion
     dimantion = 1536  # OpenAI embeddings amount
 
-    def __init__(self, docs) -> None:
+    def __init__(self) -> None:
 
         self.embeddings = OpenAIEmbeddings()
-
-        # Create vector doc
-        self.vectorDBInstance = self.createDBFromDocument(docs=docs)
 
         # And save it
         # self.getTheSavedLocalDB()
@@ -35,8 +29,7 @@ class FaissDB:
         """Generates faiss vector vecktorstore"""
 
         splittedDocs = Textor.splitteDocuments(docs)
-        db = FAISS.from_documents(splittedDocs, self.embeddings)
-        return db
+        return FAISS.from_documents(splittedDocs, self.embeddings)
 
     # Save it to the load
     # We will then use it

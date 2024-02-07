@@ -8,4 +8,5 @@ class SummarizationChain:
 
         # map_reduce = Summarization of the Summarization
         chain = load_summarize_chain(llm=llm, chain_type="map_reduce", **kwargs)
-        return chain.run(text)
+        resp = chain.run(text)
+        return resp
